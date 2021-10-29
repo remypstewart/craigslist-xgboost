@@ -14,7 +14,6 @@ from yellowbrick.regressor import residuals_plot
 import pandas as pd
 import xgboost
 from numpy import absolute, sort, mean, ones
-import matplotlib.pyplot as pyplot
 import seaborn as sns
 
 listings = pd.read_csv("listings_portfolio_trim.csv")
