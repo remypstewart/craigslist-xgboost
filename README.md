@@ -7,7 +7,6 @@ XGBoost is a well-suited model for my research interests due to its inherent non
 To begin my model development, I load in my preprocessed Craigslist dataset that links listing’s posted geolocations with census tract-level characteristics sourced from the [American Community Survey]( https://www.census.gov/programs-surveys/acs). Census tracts serve as a rough proxy for regional neighborhoods. My variables include measures for the majority racial and ethnic group within a given census tract, college education levels, employment rates, the region of the country the tract is in, and beyond. 
 
 ``` python
-
 from sklearn.model_selection import train_test_split, RepeatedKFold, cross_val_score, GridSearchCV
 from sklearn.metrics import mean_absolute_error
 from yellowbrick.regressor import residuals_plot
@@ -33,7 +32,6 @@ sns.histplot(data=listings, x='clean_rent')
 I convert all categorical variables into a numeric representations through one-hot encoding which produces a final feature set of 24 variables. I then prepare respective training and test sets for the independent variables and listing rental prices. My XGBoost model will use mean absolute error (MAE) as its guiding performance metric. I additionally compute a baseline model that attempts to predict the test set’s rental prices via the training set’s average rent price to serves as the ground metric for all of my subsequent models to improve on. 
 
 ``` python
-
 mean_train = mean(rent_train)
 baseline_predictions = ones(rent_test.shape) * mean_train
 mae_baseline = mean_absolute_error(rent_test, baseline_predictions)
@@ -42,7 +40,6 @@ mae_baseline = mean_absolute_error(rent_test, baseline_predictions)
 The mean absolute error results implies that on average the naïve model’s predicted rent value deviates by $604 from the true asked rent price. My goal is therefore to find the optimum model design to reduce MAE from this baseline by incorporating features as well as hyperparameter tuning- referring to different choices in model structure and behavior- within my XGBoost model. I instantiate my first instance of the model with an arbitrary hyperparameter specification and use 10-fold cross validation to fit my training data. 
 
 ``` python
-
 xgb_reg = xgboost.XGBRegressor(max_depth=5, n_estimators=100,
                                random_state=200, eta=0.1)
 
@@ -71,7 +68,6 @@ A strength of XGBoost models are their tunability regarding a range of hyperpara
 By using Scikit-learn’s grid seach cross-validation function, I test all specified values of each of the hyperparameters across all potential model combinations. This allows me to identify which model specification leads to the greatest reduction in MAE.  
 
 ``` python
-
 params_test={'max_depth': [4,6,8],
         'gamma': [0, 1, 2],
         'eta': [0.01, 0.1, 0.2],
